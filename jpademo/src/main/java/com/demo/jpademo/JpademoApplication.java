@@ -13,6 +13,7 @@ public class JpademoApplication {
 	@Autowired
 	DiscoveryClient discoveryClient;
 	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(JpademoApplication.class, args);
 	}

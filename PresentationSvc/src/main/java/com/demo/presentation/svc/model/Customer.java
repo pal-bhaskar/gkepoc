@@ -1,7 +1,5 @@
 package com.demo.presentation.svc.model;
 
-import java.sql.Date;
-
 
 public class Customer {
 

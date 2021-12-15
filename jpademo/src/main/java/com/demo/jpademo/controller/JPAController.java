@@ -14,7 +14,7 @@ import com.demo.jpademo.dal.JPADemoService;
 import com.demo.jpademo.model.Customer;
 
 @RestController
-@RequestMapping("/private/v1/jpatest")
+@RequestMapping("/private/v1")
 public class JPAController {
 	
 	@Autowired

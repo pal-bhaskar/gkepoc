@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.demo.presentation.svc.model.Customer;
 
-@FeignClient(value="JPADemo")
+@FeignClient(value="database-service")
 public interface JPADemoClient {
 
-	@GetMapping(value = "/private/v1/jpatest/get/allcustomer", produces = "application/json")
+	@GetMapping(value = "/private/v1/get/allcustomer", produces = "application/json")
     List<Customer> getCustomers();
 
-    @PostMapping(value = "/private/v1/jpatest/add/customer")
+    @PostMapping(value = "/private/v1/add/customer")
     void saveCustomer(Customer customerData);
 }

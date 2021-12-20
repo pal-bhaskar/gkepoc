@@ -5,9 +5,10 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     serviceUrl:
-      default-zone: http://eureka.eureka.default.svc.cluster.local:8761/eureka
+      default-zone: http://eureka-0.eureka.default.svc.cluster.local:8761/eureka,http://eureka-1.eureka.default.svc.cluster.local:8761/eureka,http://eureka-2.eureka.default.svc.cluster.local:8761/eureka
     instance:
       prefer-ip-address: true
+      hostname: apigateway
 spring: 
   cloud:    
     gateway:

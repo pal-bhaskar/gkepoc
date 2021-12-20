@@ -1,0 +1,46 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: jpademo
+spec:
+  selector:
+    app: jpademo
+  type: NodePort
+  ports:
+    - nodePort: 30161
+      port: 80
+      targetPort: 8082
+
+#kind: Service
+#apiVersion: v1
+#metadata:
+#  name: jpademo
+#spec:
+#  selector:
+#    app: jpademo
+#  type: ClusterIP
+#  ports:
+#      port: 80
+#      targetPort: 8082
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jpademo
+  labels:
+    app: jpademo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jpademo
+  template:
+    metadata:
+      labels:
+        app: jpademo
+    spec:
+      containers:
+        - name: jpademo
+          image: gkedemo-334514/jpademo
+          ports:
+            - containerPort: 8082

@@ -1,0 +1,46 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: presentation
+spec:
+  selector:
+    app: presentation
+  type: NodePort
+  ports:
+    - nodePort: 30162
+      port: 80
+      targetPort: 8081
+
+#kind: Service
+#apiVersion: v1
+#metadata:
+#  name: presentation
+#spec:
+#  selector:
+#    app: presentation
+#  type: ClusterIP
+#  ports:
+#      port: 80
+#      targetPort: 8082
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: presentation
+  labels:
+    app: presentation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: presentation
+  template:
+    metadata:
+      labels:
+        app: presentation
+    spec:
+      containers:
+        - name: presentation
+          image: gkedemo-334514/presentation
+          ports:
+            - containerPort: 8081

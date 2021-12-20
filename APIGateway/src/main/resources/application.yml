@@ -22,5 +22,5 @@ spring:
         predicates:
         - Path=/private/v1/**
   application:
-    name: APIGateway
+    name: apigateway
           

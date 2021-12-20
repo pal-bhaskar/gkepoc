@@ -14,13 +14,13 @@ spring:
           enabled: true
       routes:
       - id: presentation
-        uri: lb://PresentationService
+        uri: lb://presentation
         predicates:
         - Path=/public/v1/**
       - id: jpademo
-        uri: lb://JPADemo
+        uri: lb://jpademo
         predicates:
-        - Path=/private/v1/jpatest/**
+        - Path=/private/v1/**
   application:
     name: APIGateway
           

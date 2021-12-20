@@ -19,7 +19,7 @@ metadata:
   labels:
     app: apigateway
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: apigateway
@@ -29,7 +29,7 @@ spec:
         app: apigateway
     spec:
       containers:
-        - name: 
+        - name: apigateway
           image: gkedemo-334514/apigateway
           ports:
             - containerPort: 8080

@@ -5,7 +5,7 @@ metadata:
 data:
   # if you want to deploy n instances of eureka cluster,
   # you should set eureka_service_address: http://eureka-0.eureka:8761/eureka,...,http://eureka-(n-1).eureka:8761/eureka
-  eureka_service_address: http://eureka-0.eureka:8761/eureka
+  eureka_service_address: http://eureka-0.eureka:8761/eureka,http://eureka-1.eureka:8761/eureka
 ---
 apiVersion: v1
 kind: Service
@@ -40,9 +40,9 @@ kind: StatefulSet
 metadata:
   name: eureka
 spec:
-  serviceName: 'eureka'
+  serviceName: "eureka"
   # n instances
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: eureka
@@ -53,26 +53,36 @@ spec:
     spec:
       containers:
         - name: eureka
-          image: gkedemo-334514/eureka-server
+          image: gcr.io/gkedemo-334514/eureka
           ports:
             - containerPort: 8761
-          resources:
-            requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
-              memory: "1200Mi"
-              cpu: "500m"
+#          resources:
+#            requests:
+#              memory: "1Gi"
+#              cpu: "500m"
+#            limits:
+#              memory: "1200Mi"
+#              cpu: "500m"
           env:
             - name: EUREKA_SERVER_ADDRESS
               valueFrom:
                 configMapKeyRef:
                   name: eureka-cm
                   key: eureka_service_address
-            - name: ENVIRONMENT
-              value: "prod"
-            - name: JVM_OPTS
-              value: "-Xms1g -Xmx1g"
+            - name: UREKA_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          # Due to camelcase issues with "defaultZone" and "preferIpAddress", _JAVA_OPTIONS is used here
+            - name: _JAVA_OPTIONS
+              value: -Deureka.instance.preferIpAddress=false -Deureka.client.serviceUrl.defaultZone=http://eureka-0.eureka:8761/eureka/,http://eureka-1.eureka:8761/eureka/
+            - name: EUREKA_CLIENT_REGISTERWITHEUREKA
+              value: "true"
+            - name: EUREKA_CLIENT_FETCHREGISTRY
+              value: "true"
+        # The hostnames must match with the the eureka serviceUrls, otherwise the replicas are reported as unavailable in the eureka dashboard      
+            - name: EUREKA_INSTANCE_HOSTNAME
+              value: ${UREKA_POD_NAME}.eureka
           livenessProbe:
             httpGet:
               path: /liveness
